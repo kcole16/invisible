@@ -9,11 +9,6 @@ from message import initial_response, update_conversation, create_response
 
 application = Flask(__name__) #establishing flask application
 
-@application.route('/home/', methods=['GET'])
-def home():
-    # if request.method == 'POST':
-    return jsonify(data="Hello World")
-
 def respond_to_message(message, convo_id, response_num):
     response = create_response(message, response_num)
     access_token = getenv('ACCESS_TOKEN')
@@ -59,9 +54,15 @@ def get_conversations():
         elif convo['updated_time'] != conversation['updated_time']:
             get_messages(id, conversation['response'])
 
+@application.route('/', methods=['GET'])
+def home():
+    # if request.method == 'POST':
+    get_conversations()
+    return jsonify(data="Hello World")
+
 if __name__ == "__main__":
     application.debug = True
-    while application.debug:
-        get_conversations()
-        time.sleep(2)
+    # while application.debug:
+    #     get_conversations()
+    #     time.sleep(2)
     application.run()
