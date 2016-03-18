@@ -54,15 +54,9 @@ def get_conversations():
         elif convo['updated_time'] != conversation['updated_time']:
             get_messages(id, conversation['response'])
 
-@application.route('/', methods=['GET'])
-def home():
-    # if request.method == 'POST':
-    get_conversations()
-    return jsonify(data="Hello World")
-
 if __name__ == "__main__":
     application.debug = True
-    # while application.debug:
-    #     get_conversations()
-    #     time.sleep(2)
+    while application.debug:
+        get_conversations()
+        time.sleep(2)
     application.run()
