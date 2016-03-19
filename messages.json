@@ -1,0 +1,34 @@
+{
+	'messages': {
+		0: {
+			'name': 'welcome',
+			'content': 'Welcome to Invisible API! This is our internal bot, and serves as both our demo and information center. To get started, what is your name?',
+			'validator':'text' 
+			},
+		1: {
+			'name': 'email',
+			'content': 'Hello, %s! Thank you for your interest in Invisible! Which email address do you prefer to be contacted at?',
+			'validator': 'email' 	
+		},
+		2: {
+			'name': 'company',
+			'content': 'Fantastic! What is the name of your company?',
+			'validator': 'company'
+		},
+		3: {
+			'name': 'url',
+			'content': 'Good good! Does your company have a website or facebook page? If not, that's ok!,
+			'validator': 'url'
+		},
+		4: {
+			'name': 'intent',
+			'content': 'Last question, how would you like to use Invisible API?',
+			'validator': 'text'
+		},
+		5: {
+			'name': 'thanks',
+			'content': 'Great! Thank you %s! Someone from our team will be in contact shortly. For more information about Invisible API, please visit our website: http://www.invisibleapi.com. Have a great day!',
+			'validator': null
+		}
+	}
+}

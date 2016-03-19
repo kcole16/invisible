@@ -1,25 +1,34 @@
 import requests
 
 from utils import getenv, connect_db
+from validators import *
 
-def update_conversation(convo_id, response_num):
-    db = connect_db()
-    access_token = getenv('ACCESS_TOKEN')
-    params = {'access_token': access_token}
-    url = 'https://graph.facebook.com/v2.5/%s' % convo_id
-    r = requests.get(url, params=params) 
-    data = r.json()
-    db.conversations.update({'convo_id':convo_id}, {'convo_id':convo_id, 
-        'updated_time':data['updated_time'], 'response': response_num+1})
+class Conversation():
 
-def initial_response(convo_id):
+    def __init__(self, con_id, response):
+        self.con_id = con_id
+        self.response = response
+        self.access_token = getenv('ACCESS_TOKEN')
+
+    def update_conversation(self):
+        db = connect_db()
+        params = {'access_token': self.access_token}
+        url = 'https://graph.facebook.com/v2.5/%s' % con_id
+        r = requests.get(url, params=params) 
+        data = r.json()
+        db.conversations.update({'con_id':con_id}, {'con_id':con_id, 
+            'updated_time':data['updated_time'], 'response': response+1})
+
+    def complete_response(self):
+        
+
+def initial_response(con_id):
     response = """Hello! Thanks for trying out the Invisible API demo! This is a basic version of our full product, but hopefully it give you a good idea of what we do! First off, what is your name?"""
-    access_token = getenv('ACCESS_TOKEN')
-    data = {'access_token': access_token, 'message': response}
-    url = 'https://graph.facebook.com/v2.5/%s/messages' % convo_id
+    data = {'access_token': self.access_token, 'message': response}
+    url = 'https://graph.facebook.com/v2.5/%s/messages' % con_id
     r = requests.post(url, data=data) 
     if r.ok:
-        update_conversation(convo_id, 0)
+        update_conversation(con_id, 0)
 
 def weather_response(location):
     api_key = getenv('WEATHER_API_KEY')
@@ -38,23 +47,22 @@ def weather_response(location):
         )
     return response
 
-
-def create_response(info, response_num):
-    if response_num == 1:
+def create_response(info, response):
+    if response == 1:
         response = "Hi %s! Here's a quick example, today's weather forecast. Where are you located?" % info
-    elif response_num == 2:
+    elif response == 2:
         response = weather_response(info)
-    elif response_num == 3:
+    elif response == 3:
         response = "That's all for now! This is just a very small sneak peak of our potential. Check out our website for more details: http://www.invisibleapi.com. If you have any questions, send them to kendall@invisibleapi.com."
-    elif response_num == 4:
+    elif response == 4:
         response = "Thanks again for your interest! I'm going to start repeating myself now..."
-    elif response_num == 5:
+    elif response == 5:
         response = "Repeating"
-    elif response_num == 6:
+    elif response == 6:
         response = "Still repeating"
     else:
         base = "still "
-        root = base * (response_num - 6)
+        root = base * (response - 6)
         response = "Still "+root+"repeating"
 
     return response

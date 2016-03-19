@@ -1,0 +1,6 @@
+TODOS:
+-Store entire conversation in DB
+-Update conversation objects upon changes
+-Control flow of conversation entirely through conversation object
+-Message responses noted in messages.json file
+-Incoming message validators stored in validators.py
