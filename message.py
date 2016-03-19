@@ -30,7 +30,7 @@ def weather_response(location):
     weather = data['weather'][0]['description']
     high = data['main']['temp_max']
     low = data['main']['temp_min']
-    response = "Today in %s: %s. The high is %s and the low is %s. Have a great day!" % (
+    response = "Today in %s: %s. The high is %s C and the low is %s C. Have a great day!" % (
             location,
             weather,
             high, 
@@ -41,7 +41,7 @@ def weather_response(location):
 
 def create_response(info, response_num):
     if response_num == 1:
-        response = "Hi %s! To give you an idea of what I can do, I'm going to show you today's weather forecast. Where are you located?" % info
+        response = "Hi %s! Here's a quick example, today's weather forecast. Where are you located?" % info
     elif response_num == 2:
         response = weather_response(info)
     elif response_num == 3:
