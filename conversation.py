@@ -1,14 +1,14 @@
 import requests
 
 from utils import getenv, connect_db
-from validators import *
+from validate import *
 
 class Conversation():
 
-    def __init__(self, con_id, response):
+    def __init__(self, con_id, response, access_token):
         self.con_id = con_id
         self.response = response
-        self.access_token = getenv('ACCESS_TOKEN')
+        self.access_token = access_token
 
     def update_conversation(self):
         db = connect_db()
@@ -19,16 +19,23 @@ class Conversation():
         db.conversations.update({'con_id':con_id}, {'con_id':con_id, 
             'updated_time':data['updated_time'], 'response': response+1})
 
-    def complete_response(self):
-        
 
-def initial_response(con_id):
+def update_conversation(con_id, response, access_token):
+    db = connect_db()
+    params = {'access_token': access_token}
+    url = 'https://graph.facebook.com/v2.5/%s' % con_id
+    r = requests.get(url, params=params) 
+    data = r.json()
+    db.conversations.update({'con_id':con_id}, {'con_id':con_id, 
+        'updated_time':data['updated_time'], 'response': response+1})
+
+def initial_response(con_id, access_token):
     response = """Hello! Thanks for trying out the Invisible API demo! This is a basic version of our full product, but hopefully it give you a good idea of what we do! First off, what is your name?"""
-    data = {'access_token': self.access_token, 'message': response}
+    data = {'access_token': access_token, 'message': response}
     url = 'https://graph.facebook.com/v2.5/%s/messages' % con_id
     r = requests.post(url, data=data) 
     if r.ok:
-        update_conversation(con_id, 0)
+        update_conversation(con_id, 0, access_token)
 
 def weather_response(location):
     api_key = getenv('WEATHER_API_KEY')

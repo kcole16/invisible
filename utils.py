@@ -28,3 +28,17 @@ def connect_db():
    client = pymongo.MongoClient(url)
    db = client[app_name]
    return db
+
+
+def get_page_token():
+  access_token = getenv('ACCESS_TOKEN')
+  url = "https://graph.facebook.com/me/accounts"
+  params = {'access_token':access_token}
+  r = requests.get(url, params=params)
+  page = r.json()['data'][0]
+  if page['name'] == 'Invisible':
+      page_token = page['access_token']
+  else: 
+      page_token = None
+
+  return page_token
