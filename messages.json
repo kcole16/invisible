@@ -2,39 +2,44 @@
 	"messages": {
 		"0": {
 			"name": "welcome",
-			"content": "Welcome to Invisible API! This is our internal bot, and serves as both our demo and information center. To get started, what is your name?",
+			"message_type": "intro",
+			"content": "'Welcome to Invisible API! This is our internal bot, and serves as both our demo and information center. To get started, what is your name?'",
 			"validator":"text",
 			"error_message": "Sorry, please try a different message"
 			},
 		"1": {
 			"name": "email",
-			"content": "Hello, %s! Thank you for your interest in Invisible! Which email address do you prefer to be contacted at?",
-			"validator": "email",
-			"error_message": "Please enter a valid email like 'kendall@invisibleapi.com'."
+			"message_type": "name",
+			"content": "'Hello, %s! Thank you for your interest in Invisible! Which email address do you prefer to be contacted at?' % last_message",
+			"validator": "text",
+			"error_message": "Sorry, please try a different message"
 		},
 		"2": {
 			"name": "company",
-			"content": "Fantastic! What is the name of your company?",
-			"validator": "text",
-			"error_message": "Please enter a real name."
-
+			"message_type": "email",
+			"content": "'Fantastic! What is the name of your company?'",
+			"validator": "email",
+			"error_message": "Please enter a valid email like 'kendall@invisibleapi.com"
 		},
 		"3": {
 			"name": "url",
-			"content": "Good good! Does your company have a website or facebook page? If not, that's ok!",
-			"validator": "url",
-			"error_message": "Please enter a valid url like 'http://www.invisibleapi.com'."
+			"message_type": "company",
+			"content": "'Good good! Does your company have a website or facebook page? If not, no worries!'",
+			"validator": "text",
+			"error_message": "Please enter a real name."
 		},
 		"4": {
 			"name": "intent",
-			"content": "Last question, how would you like to use Invisible API?",
-			"validator": "text",
-			"error_message": "Please tell us a bit more."
+			"message_type": "url",
+			"content": "'Last question, how would you like to use Invisible API?'",
+			"validator": "url",
+			"error_message": "Please enter a valid url like 'http://www.invisibleapi.com'"
 		},
 		"5": {
 			"name": "thanks",
-			"content": "Great! Thank you %s! Someone from our team will be in contact shortly. For more information about Invisible API, please visit our website: http://www.invisibleapi.com. Have a great day!",
-			"validator": null,
+			"message_type": "use_case",
+			"content": "'Great! Thank you %s! Someone from our team will be in contact shortly. For more information about Invisible API, please visit our website: http://www.invisibleapi.com. Have a great day!' % self.user['name']",
+			"validator": "text",
 			"error_message": "That's all for now. We look forward to learning more about your business!"
 		}
 	}

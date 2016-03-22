@@ -41,3 +41,24 @@ def get_page_token():
       page_token = None
 
   return page_token
+
+def send_mail(subject, recipient, html, sender):
+    r = requests.post(
+        "https://api.mailgun.net/v2/%s/messages" % getenv('MAILGUN_NAME'),
+        auth=("api", getenv('MAILGUN_API_KEY')),
+        data={"from": "%s" % sender,
+              "to": recipient,
+              "subject": subject,
+              "html": html})
+    if not r.ok:
+        logger.error(r.text)
+
+def send_conf_email(name, email):
+    subject = "Welcome to InvisibleAPI"
+    sender = "Kendall Cole at InvisibleAPI <kendall@invisibleapi.com>"
+    html = """<p>%s,</p>
+    <p>Welcome to InvisibleAPI! We are excited to help you increase customer engagement through Facebook Messenger.
+    <br>If you have any questions, feel free to contact me at kendall@invisibleapi.com.</p><br>
+    <p>Best,</p>
+    <p>Kendall<br>Co-Founder<br>InvisibleAPI</p>""" % name
+    send_mail(subject, email, html, sender)

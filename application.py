@@ -21,11 +21,11 @@ def get_conversations(access_token):
         conversation = db.conversations.find_one({'con_id':id})
         if conversation is None:
             print access_token
-            conversation = Conversation(id, 0, None, access_token)
-            db.conversations.insert({'con_id':id, 'updated_time': convo['updated_time'], 'response':0})
+            conversation = Conversation(id, 0, None, access_token, {})
+            db.conversations.insert({'con_id':id, 'updated_time': convo['updated_time'], 'response':0, 'user': {}})
             conversation.respond()
         elif convo['updated_time'] != conversation['updated_time']:
-            conversation = Conversation(id, conversation['response'], None, access_token)
+            conversation = Conversation(id, conversation['response'], None, access_token, conversation['user'])
             conversation.respond()
 
 @application.route('/fb', methods=['GET', 'POST'])

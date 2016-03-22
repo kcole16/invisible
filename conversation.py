@@ -2,52 +2,63 @@ import json
 
 import requests
 
-from utils import getenv, connect_db
+from utils import getenv, connect_db, send_conf_email
 from facebook import get_message, respond_to_message
 from validate import *
 
 class Conversation():
 
-    def __init__(self, con_id, response, last_message, access_token):
+    def __init__(self, con_id, response, last_message, access_token, user):
         self.con_id = con_id
         self.last_message = last_message
         self.response = response
         self.access_token = access_token
+        self.user = user
         self.responses = json.load(open('messages.json'))['messages']
 
-    def update_conversation(self):
+    def update_conversation(self, end=False):
         db = connect_db()
         params = {'access_token': self.access_token}
         url = 'https://graph.facebook.com/v2.5/%s' % self.con_id
         r = requests.get(url, params=params) 
         data = r.json()
-        response = self.response+1
+        try:
+            message_type = self.responses[str(self.response)]['message_type']
+        except KeyError:
+            response = self.response
+        else:
+            response = self.response+1
+            self.user[message_type] = self.last_message
         self.response = response
-        print response
+        print response, self.user, data['updated_time']
         db.conversations.update({'con_id':self.con_id}, {'con_id':self.con_id, 
-            'updated_time':data['updated_time'], 'response': response})
+            'updated_time':data['updated_time'], 'response': response, 'user': self.user})
 
     def respond(self):
         # Get response from response tree based on response number
-
         try:
             response_branch = self.responses[str(self.response)]
         except KeyError:
             response = "That's all for now! I'll probably just repeat myself :)"
-            issue_response(self.con_id, response, self.access_token)
+            respond_to_message(response, self.con_id, self.access_token)
+            self.update_conversation(end=True)
         else:
             validator = response_branch['validator']
             last_message = get_message(self.con_id, self.access_token)
-            if last_message and eval("%s('%s')" % (validator, last_message)):
-                response = response_branch['content']
+            self.last_message = last_message
+            if last_message and eval("%s('%s')" % (validator, last_message.replace("'", ""))):
+                response = eval(response_branch['content'])
                 self.update_conversation()
                 respond_to_message(response, self.con_id, self.access_token)
+                if response_branch['name'] == 'thanks':
+                    name = self.user['name']
+                    email = self.user['email']
+                    send_conf_email(name, email)
             elif last_message:
                 response = response_branch['error_message']
                 respond_to_message(response, self.con_id, self.access_token)
             else:
                 pass
-
 
 # def update_conversation(con_id, response, access_token):
 #     db = connect_db()
