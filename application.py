@@ -30,7 +30,6 @@ def get_conversations(access_token):
 
 @application.route('/fb', methods=['GET', 'POST'])
 def fb():
-    print "Hello"
     client_id = getenv('CLIENT_ID')
     client_secret = getenv('CLIENT_SECRET')
     url = "https://www.facebook.com/dialog/oauth?client_id=%s&client_secret=%s&redirect_uri=http://localhost:5000/&scope=read_page_mailboxes,manage_pages, publish_pages,pages_show_list,pages_manage_cta,pages_manage_leads" % (client_id, client_secret)
@@ -53,8 +52,24 @@ def home():
 
     return jsonify(data=access_token)
 
+def run_process():
+    run = True
+    page_token = get_page_token()
+    pagecheck = 1
+    while run:
+        if pagecheck % 10 == 0:
+            page_token = get_page_token()
+            get_conversations(page_token)
+            pagecheck = 1
+            time.sleep(2)
+        else:
+            get_conversations(page_token)
+            pagecheck += 1
+            time.sleep(2)
+
+run = run_process()
+
 if __name__ == "__main__":
-    application.debug = True
     run = True
     page_token = get_page_token()
     pagecheck = 1
