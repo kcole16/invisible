@@ -7,8 +7,6 @@ from flask import Flask, jsonify, render_template, redirect, request
 from utils import connect_db, getenv, get_page_token
 from conversation import Conversation
 
-application = Flask(__name__) #establishing flask application
-
 def get_conversations(access_token):
     db = connect_db()
     params = {'access_token': access_token}
@@ -28,29 +26,29 @@ def get_conversations(access_token):
             conversation = Conversation(id, conversation['response'], None, access_token, conversation['user'])
             conversation.respond()
 
-@application.route('/fb', methods=['GET', 'POST'])
-def fb():
-    client_id = getenv('CLIENT_ID')
-    client_secret = getenv('CLIENT_SECRET')
-    url = "https://www.facebook.com/dialog/oauth?client_id=%s&client_secret=%s&redirect_uri=http://localhost:5000/&scope=read_page_mailboxes,manage_pages, publish_pages,pages_show_list,pages_manage_cta,pages_manage_leads" % (client_id, client_secret)
-    return redirect(url)
+# @application.route('/fb', methods=['GET', 'POST'])
+# def fb():
+#     client_id = getenv('CLIENT_ID')
+#     client_secret = getenv('CLIENT_SECRET')
+#     url = "https://www.facebook.com/dialog/oauth?client_id=%s&client_secret=%s&redirect_uri=http://localhost:5000/&scope=read_page_mailboxes,manage_pages, publish_pages,pages_show_list,pages_manage_cta,pages_manage_leads" % (client_id, client_secret)
+#     return redirect(url)
 
-@application.route('/', methods=['GET', 'POST'])
-def home():
-    code = request.args['code']
-    url = "https://graph.facebook.com/oauth/access_token"
-    client_id = getenv('CLIENT_ID')
-    client_secret = getenv('CLIENT_SECRET')
-    params = {
-        'client_id':client_id,
-        'client_secret': client_secret,
-        'redirect_uri': 'http://localhost:5000/',
-        'code':code
-    }
-    r = requests.get(url, params)
-    access_token = r.text.split('access_token=')[1]
+# @application.route('/', methods=['GET', 'POST'])
+# def home():
+#     code = request.args['code']
+#     url = "https://graph.facebook.com/oauth/access_token"
+#     client_id = getenv('CLIENT_ID')
+#     client_secret = getenv('CLIENT_SECRET')
+#     params = {
+#         'client_id':client_id,
+#         'client_secret': client_secret,
+#         'redirect_uri': 'http://localhost:5000/',
+#         'code':code
+#     }
+#     r = requests.get(url, params)
+#     access_token = r.text.split('access_token=')[1]
 
-    return jsonify(data=access_token)
+#     return jsonify(data=access_token)
 
 def run_process():
     run = True
@@ -68,6 +66,7 @@ def run_process():
             time.sleep(2)
 
 run = run_process()
+application = run_process()
 
 if __name__ == "__main__":
     run = True
