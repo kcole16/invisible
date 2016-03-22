@@ -24,7 +24,7 @@
 		"3": {
 			"name": "url",
 			"message_type": "company",
-			"content": "'Great! What is the website or facebook page for %s?' % self.user['company']",
+			"content": "'Great! What is your website or facebook page?'",
 			"validator": "text",
 			"error_message": "Please enter a real name."
 		},
