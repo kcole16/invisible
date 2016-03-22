@@ -29,7 +29,6 @@ def connect_db():
    db = client[app_name]
    return db
 
-
 def get_page_token():
   access_token = getenv('ACCESS_TOKEN')
   url = "https://graph.facebook.com/me/accounts"

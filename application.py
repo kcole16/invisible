@@ -5,34 +5,9 @@ import requests
 
 from flask import Flask, jsonify, render_template, redirect, request
 from utils import connect_db, getenv, get_page_token
-from conversation import initial_response, update_conversation, create_response
+from conversation import Conversation
 
 application = Flask(__name__) #establishing flask application
-
-def respond_to_message(message, convo_id, response_num, access_token):
-    response = create_response(message, response_num)
-    data = {'access_token': access_token, 'message': response}
-    url = 'https://graph.facebook.com/v2.5/%s/messages' % convo_id
-    r = requests.post(url, data=data) 
-    print r.text
-
-def get_message(message_id, convo_id, response_num, access_token):
-    params = {'access_token': access_token, 'fields':'message'}
-    url = 'https://graph.facebook.com/v2.5/%s' % message_id
-    r = requests.get(url, params=params)
-    message = r.json()['message']
-    respond_to_message(message, convo_id, response_num, access_token)
-    update_conversation(convo_id, response_num, access_token)
-
-def get_messages(convo_id, response_num, access_token):
-    params = {'access_token': access_token, 'fields':'from'}
-    url = 'https://graph.facebook.com/v2.5/%s/messages' % convo_id
-    r = requests.get(url, params=params)
-    data = r.json()['data']
-    newest_message = data[0]
-    id = newest_message['id']
-    if newest_message['from']['name'] != 'Invisible':
-        get_message(id, convo_id, response_num, access_token)
 
 def get_conversations(access_token):
     db = connect_db()
@@ -43,12 +18,15 @@ def get_conversations(access_token):
     data = r.json()['data']
     for convo in data:
         id = str(convo['id'])
-        conversation = db.conversations.find_one({'convo_id':id})
+        conversation = db.conversations.find_one({'con_id':id})
         if conversation is None:
-            db.conversations.insert({'convo_id':id, 'updated_time': convo['updated_time'], 'response':0})
-            initial_response(id, access_token)
+            print access_token
+            conversation = Conversation(id, 0, None, access_token)
+            db.conversations.insert({'con_id':id, 'updated_time': convo['updated_time'], 'response':0})
+            conversation.respond()
         elif convo['updated_time'] != conversation['updated_time']:
-            get_messages(id, conversation['response'], access_token)
+            conversation = Conversation(id, conversation['response'], None, access_token)
+            conversation.respond()
 
 @application.route('/fb', methods=['GET', 'POST'])
 def fb():
@@ -79,7 +57,6 @@ if __name__ == "__main__":
     page_token = get_page_token()
     pagecheck = 1
     while application.debug:
-        print "Hey"
         if pagecheck % 10 == 0:
             page_token = get_page_token()
             get_conversations(page_token)

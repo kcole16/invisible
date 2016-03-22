@@ -1,34 +1,41 @@
 {
-	'messages': {
-		0: {
-			'name': 'welcome',
-			'content': 'Welcome to Invisible API! This is our internal bot, and serves as both our demo and information center. To get started, what is your name?',
-			'validator':'text' 
+	"messages": {
+		"0": {
+			"name": "welcome",
+			"content": "Welcome to Invisible API! This is our internal bot, and serves as both our demo and information center. To get started, what is your name?",
+			"validator":"text",
+			"error_message": "Sorry, please try a different message"
 			},
-		1: {
-			'name': 'email',
-			'content': 'Hello, %s! Thank you for your interest in Invisible! Which email address do you prefer to be contacted at?',
-			'validator': 'email' 	
+		"1": {
+			"name": "email",
+			"content": "Hello, %s! Thank you for your interest in Invisible! Which email address do you prefer to be contacted at?",
+			"validator": "email",
+			"error_message": "Please enter a valid email like 'kendall@invisibleapi.com'."
 		},
-		2: {
-			'name': 'company',
-			'content': 'Fantastic! What is the name of your company?',
-			'validator': 'company'
+		"2": {
+			"name": "company",
+			"content": "Fantastic! What is the name of your company?",
+			"validator": "text",
+			"error_message": "Please enter a real name."
+
 		},
-		3: {
-			'name': 'url',
-			'content': 'Good good! Does your company have a website or facebook page? If not, that's ok!,
-			'validator': 'url'
+		"3": {
+			"name": "url",
+			"content": "Good good! Does your company have a website or facebook page? If not, that's ok!",
+			"validator": "url",
+			"error_message": "Please enter a valid url like 'http://www.invisibleapi.com'."
 		},
-		4: {
-			'name': 'intent',
-			'content': 'Last question, how would you like to use Invisible API?',
-			'validator': 'text'
+		"4": {
+			"name": "intent",
+			"content": "Last question, how would you like to use Invisible API?",
+			"validator": "text",
+			"error_message": "Please tell us a bit more."
 		},
-		5: {
-			'name': 'thanks',
-			'content': 'Great! Thank you %s! Someone from our team will be in contact shortly. For more information about Invisible API, please visit our website: http://www.invisibleapi.com. Have a great day!',
-			'validator': null
+		"5": {
+			"name": "thanks",
+			"content": "Great! Thank you %s! Someone from our team will be in contact shortly. For more information about Invisible API, please visit our website: http://www.invisibleapi.com. Have a great day!",
+			"validator": null,
+			"error_message": "That's all for now. We look forward to learning more about your business!"
 		}
 	}
 }
