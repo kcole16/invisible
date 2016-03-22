@@ -53,12 +53,12 @@ def send_mail(subject, recipient, html, sender):
     if not r.ok:
         logger.error(r.text)
 
-def send_conf_email(name, email):
+def send_conf_email(name, email, company):
     subject = "Welcome to InvisibleAPI"
     sender = "Kendall Cole at InvisibleAPI <kendall@invisibleapi.com>"
     html = """<p>%s,</p>
-    <p>Welcome to InvisibleAPI! We are excited to help you increase customer engagement through Facebook Messenger.
+    <p>Welcome to InvisibleAPI! We are excited to help %s increase customer engagement through Facebook Messenger.
     <br>If you have any questions, feel free to contact me at kendall@invisibleapi.com.</p><br>
     <p>Best,</p>
-    <p>Kendall<br>Co-Founder<br>InvisibleAPI</p>""" % name
+    <p>Kendall<br>Co-Founder<br>InvisibleAPI</p>""" % (name, company)
     send_mail(subject, email, html, sender)

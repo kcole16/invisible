@@ -53,7 +53,8 @@ class Conversation():
                 if response_branch['name'] == 'thanks':
                     name = self.user['name']
                     email = self.user['email']
-                    send_conf_email(name, email)
+                    company = self.user['company']
+                    send_conf_email(name, email, company)
             elif last_message:
                 response = response_branch['error_message']
                 respond_to_message(response, self.con_id, self.access_token)
