@@ -17,7 +17,7 @@
 		"2": {
 			"name": "company",
 			"message_type": "email",
-			"content": "'Fantastic! What is the name of your company?'",
+			"content": "'Fantastic! What's the name of your company?'",
 			"validator": "email",
 			"error_message": "Please enter a valid email like 'kendall@invisibleapi.com"
 		},
