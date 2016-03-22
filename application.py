@@ -55,9 +55,10 @@ def home():
 
 if __name__ == "__main__":
     application.debug = True
+    run = True
     page_token = get_page_token()
     pagecheck = 1
-    while application.debug:
+    while run:
         if pagecheck % 10 == 0:
             page_token = get_page_token()
             get_conversations(page_token)
@@ -67,6 +68,4 @@ if __name__ == "__main__":
             get_conversations(page_token)
             pagecheck += 1
             time.sleep(2)
-    application.run()
-
 
