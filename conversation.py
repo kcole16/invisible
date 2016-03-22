@@ -39,7 +39,7 @@ class Conversation():
         try:
             response_branch = self.responses[str(self.response)]
         except KeyError:
-            response = "That's all for now! I'll probably just repeat myself :)"
+            response = "That's all for now! I'll likely just repeat myself :)"
             respond_to_message(response, self.con_id, self.access_token)
             self.update_conversation(end=True)
         else:
