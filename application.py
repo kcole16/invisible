@@ -30,6 +30,7 @@ def get_conversations(access_token):
 
 @application.route('/fb', methods=['GET', 'POST'])
 def fb():
+    print "Hello"
     client_id = getenv('CLIENT_ID')
     client_secret = getenv('CLIENT_SECRET')
     url = "https://www.facebook.com/dialog/oauth?client_id=%s&client_secret=%s&redirect_uri=http://localhost:5000/&scope=read_page_mailboxes,manage_pages, publish_pages,pages_show_list,pages_manage_cta,pages_manage_leads" % (client_id, client_secret)
